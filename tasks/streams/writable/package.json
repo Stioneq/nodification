@@ -1,0 +1,14 @@
+{
+  "name": "writable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "to-file-stream.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roman_Lapin <stioneq@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  }
+}

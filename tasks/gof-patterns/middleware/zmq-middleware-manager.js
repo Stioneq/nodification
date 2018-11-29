@@ -4,21 +4,17 @@ module.exports = class ZmqMiddlewareManager {
         this.inboundMiddleware = []; //[1]
         this.outboundMiddleware = [];
         socket.on('message', message => { //[2]
-            this.executeMiddleware(this.inboundMiddleware, {
-                data: message
-            });
+            console.log('1');
+       
         });
+        socket.on('error', err => {
+            console.log(err);
+            
+        })
     }
 
     send(data) {
-        constmessage = {
-            data: data
-        };
-        this.executeMiddleware(this.outboundMiddleware, message,
-            () => {
-                this.socket.send(message.data);
-            }
-        );
+        this.socket.send(data);
     }
 
     use(middleware) {
@@ -30,20 +26,11 @@ module.exports = class ZmqMiddlewareManager {
         }
     }
 
-    executeMiddleware(middleware, arg, finish) {
-        function iterator(index) {
-            if (index === middleware.length) {
-                return finish && finish();
-            }
-            middleware[index].call(this, arg, err => {
-                if (err) {
-
-                    return console.log('There was an error: ' + err.message);
-                }
-                iterator.call(this, ++index);
-            });
+    async executeMiddleware(middleware, arg, finish) {
+        for (let i = 0; i < middleware.length; i++) {
+            await middleware[i].call(this.socket, arg);
         }
-
-        iterator.call(this, 0);
     }
 };
+
+
